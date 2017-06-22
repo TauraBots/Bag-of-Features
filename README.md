@@ -10,7 +10,7 @@ There are many things to keep in mind while developing this model, the most impo
 ## How to use
 
 ### Create the Bag of Features
-> python createBag.py <path-to-root-image-directory> <number-of-words> <path-to-write-file>
+> python createBag.py path-to-root-image-directory number-of-words path-to-write-file
 
 The first argument is root directory of the dataset that will be used to generate the bag of features. Keep in mind that each image should be inside the folder corresponding to its category, like in the Example Dataset.
 
