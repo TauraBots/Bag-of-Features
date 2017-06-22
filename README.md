@@ -13,21 +13,27 @@ There are many things to keep in mind while developing this model, the most impo
 > python createBag.py <path-to-root-image-directory> <number-of-words> <path-to-write-file>
 
 The first argument is root directory of the dataset that will be used to generate the bag of features. Keep in mind that each image should be inside the folder corresponding to its category, like in the Example Dataset.
+
 The second argument is the number of clusters or words that will be generated from all the keypoints and descriptors in the dataset. Usual values are 500~1000.
+
 The third argument is the filename which to save the bag of features.
 
 ### Train the Classifier
-> python trainClassifier.py <path-to-root-image-directory> <bag-of-features> <classifier-save-file>
+> python trainClassifier.py path-to-root-image-directory bag-of-features classifier-save-file
 
 The first argument is root directory of the dataset that will be used to train the classifier. The images should be separated within folders whose names are the categories of images within. These will be the labels for the supervised training and the categories which the objects will be classified later.
+
 The second argument is the bag of features file that was created earlier.
+
 The third argument is filename which to save the classifier.
 
 ### Classify an Image
-> python classifyImage.py <classifier-file> <bag-of-features-file> <query-image>
+> python classifyImage.py classifier-file bag-of-features-file query-image
 
 The first argument is the trained classifier.
+
 The second argument is the bag of features. It's important that the classifier and bag match, that means, the bag passed should be the same that was used when training the classifier.
+
 The third argument is the image to be classified.
 
 ## Implementation
