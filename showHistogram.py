@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 import sys
 from matplotlib import pyplot as plt
+from copy import copy
 
 if len(sys.argv) != 3:
     print "Usage:", sys.argv[0], "<bag-of-features> <image>"
@@ -15,27 +16,35 @@ if len(sys.argv) != 3:
 query_image = sys.argv[2]
 bag = joblib.load(sys.argv[1])
 
+vocab_size = len(set(bag.labels_))
+
 # showing points and labels in the first image
 original = cv2.imread(query_image)
 qImage = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
 sift = cv2.xfeatures2d.SIFT_create()
 kp, des = sift.detectAndCompute(qImage, None)
 
-hist = dict.fromkeys(bag.labels_, 0)
+h = np.zeros(vocab_size)
 print "Calculating histogram for queried image."
 for i in range(0, len(kp)): # len(kp) == len(des)
-    x, y = (int(kp[i].pt[0]), int(kp[i].pt[1]))
     label = bag.predict(des[i].reshape(1, -1))
-    hist[label[0]] += 1
+    h[label[0]] += 1
+
+# normalizing histogram using OpenCV normalize
+normalized = np.zeros(vocab_size)
+cv2.normalize(h, normalized, norm_type=cv2.NORM_L2)
 
 print "Queried image hist from visual words:"
-print hist
+    #print hist
 
-plt.subplot(211)
-plt.bar(hist.keys(), hist.values(), color='g')
+plt.subplot(221)
+plt.bar(np.arange(len(h)), h, color='g')
 
-plt.subplot(212)
+plt.subplot(223)
 original = cv2.cvtColor(original, cv2.COLOR_RGB2BGR) # convert to rgb for pyplot
 plt.imshow(original)
+
+plt.subplot(222)
+plt.bar(np.arange(len(normalized)), normalized, color='r')
 
 plt.show()

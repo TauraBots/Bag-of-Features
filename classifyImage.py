@@ -4,10 +4,12 @@
 
 import numpy as np
 import cv2
+from sklearn.preprocessing import StandardScaler
 from sklearn.externals import joblib
 from sklearn.cluster import KMeans
 from sklearn import svm
 import sys
+from matplotlib import pyplot as plt
 
 if len(sys.argv) != 4:
     print "Usage", sys.argv[0], "<classifier-file> <bag-of-features-file> <query-image>"
@@ -29,5 +31,9 @@ for i in range(0, len(kp)): # iterates through keypoints counting our visual wor
     word = bag.predict(des[i].reshape(1, -1)) # finds which of our words fit best
     hist[word[0]] += 1 # increment one occurence of it
 
+# normalizes histogram
+cv2.normalize(hist, hist, norm_type=cv2.NORM_L2)
+
 category = classifier.predict([hist])
 print "This is:", category
+print "proba:", classifier.decision_function([hist])

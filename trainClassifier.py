@@ -1,10 +1,12 @@
 import cv2
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.externals import joblib
 from sklearn import svm
 import sys
 from glob import glob
+from matplotlib import pyplot as plt
 
 if len(sys.argv) != 4:
     print "Usage:", sys.argv[0], "<path-to-root-image-directory> <bag-of-features> <classifier-save-file>"
@@ -52,6 +54,10 @@ for c in category:
             word = bag.predict(d.reshape(1, -1)) # uses the bag of words to find which cluster this descriptor best fit
             hist_i[word[0]] += 1 # increments histogram for that word
 
+        # normalizes histogram
+        cv2.normalize(hist_i, hist_i, norm_type=cv2.NORM_L2)
+        #hist_i = hist_i/hist_i.sum()
+
         hist_vector[hist_pos] = hist_i # puts current histogram into hist_vector
         targets.append(c) # append current category label to the targets
         hist_pos += 1
@@ -61,8 +67,26 @@ print "Finished generating feature histograms!"
 print "###########################"
 print "Fitting data histograms to labels/Training classifier..."
 
-classifier = svm.SVC(kernel='poly')
+classifier = svm.SVC(probability=True)
+
+print hist_vector
+print "###############"
+
+#dataScaler = StandardScaler()
+#dataScaler.fit(hist_vector)
+#params = dataScaler.get_params()
+#hist_vector = dataScaler.transform(hist_vector)
+
+#print hist_vector
+
+print targets
 classifier.fit(hist_vector, targets)
 
 print "Done! Dumping classifier to file:", save_file
 joblib.dump(classifier, save_file)
+#joblib.dump(dataScaler, "scaler")
+
+#plt.figure(1)
+#plt.bar(np.arange(len(hist_vector[0])), hist_vector[0], color='r')
+##
+#plt.show()
