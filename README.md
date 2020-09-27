@@ -1,6 +1,8 @@
 # Bag-of-Features
 Implementation of image classification using Bag of Features model.
 
+![](bofdemo.gif)
+
 The goal for this project is to provide means for identification of objects within predefined categories in real-time using a video camera for Dimitri.
 In the Bag of Features model we create a dictionary of visual words, elements which compose an image, and then use it to generate a histogram of each "word" occurence in an image, the histogram being a new, more concise representation of the image. After the dictionary is built we train a classifier based on the histograms of images.
 This method is pretty good at classifying an image, however finding the localization of the objects within the image is still an important issue. To explore in this idea we will be implementing a kind of "Convolutional Classifier" which basically is a dinamically sized window which will pass through the image labeling each slices individually, allowing us to find the localization (bounding box) of an object and multiple objects within the same image.
