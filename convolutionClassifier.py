@@ -55,7 +55,7 @@ def convolutionClassifier(img):
                 try:
                     label = classifier.predict([roi_hist])
                     if label[0] == 'bike':
-                        print "I see:", classifier.predict([roi_hist])
+                        print("I see:", classifier.predict([roi_hist]))
                         cv2.imshow("Image", rgb_img)
                         cv2.waitKey(0)
                         cv2.destroyAllWindows()
@@ -77,7 +77,7 @@ def convolutionClassifier(img):
         k_boundaries = (k_boundaries[0] * 2, k_boundaries[1] * 2)
 
 if len(sys.argv) != 4:
-    print "Usage:", sys.argv[0], "<Bag-of-Features> <Classifier> <Image>"
+    print("Usage:", sys.argv[0], "<Bag-of-Features> <Classifier> <Image>")
     sys.exit(1)
 
 # retrieving arguments from command line

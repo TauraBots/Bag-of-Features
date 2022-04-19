@@ -12,7 +12,7 @@ import sys
 from matplotlib import pyplot as plt
 
 if len(sys.argv) != 4:
-    print "Usage", sys.argv[0], "<classifier-file> <bag-of-features-file> <query-image>"
+    print("Usage", sys.argv[0], "<classifier-file> <bag-of-features-file> <query-image>")
     sys.exit(1)
 
 classifier = joblib.load(sys.argv[1])
@@ -35,5 +35,5 @@ for i in range(0, len(kp)): # iterates through keypoints counting our visual wor
 cv2.normalize(hist, hist, norm_type=cv2.NORM_L2)
 
 category = classifier.predict([hist])
-print "This is:", category
-print "proba:", classifier.decision_function([hist])
+print("This is:", category)
+print("proba:", classifier.decision_function([hist]))

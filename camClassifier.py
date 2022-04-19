@@ -11,7 +11,7 @@ from sklearn import svm
 import sys
 
 if len(sys.argv) != 3:
-    print "Usage", sys.argv[0], "<classifier-file> <bag-of-features-file>"
+    print("Usage", sys.argv[0], "<classifier-file> <bag-of-features-file>")
     sys.exit(1)
 
 classifier = joblib.load(sys.argv[1])
@@ -38,8 +38,8 @@ while True:
     # normalizes histogram
     cv2.normalize(hist, hist, norm_type=cv2.NORM_L2)
 
-    print hist
-    print "I see:", classifier.predict([hist])
+    print(hist)
+    print("I see:", classifier.predict([hist]))
     #print "Distance:", classifier.decision_function([hist])
 
     cv2.imshow("Frame", frame)

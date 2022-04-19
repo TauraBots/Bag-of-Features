@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 from copy import copy
 
 if len(sys.argv) != 3:
-    print "Usage:", sys.argv[0], "<bag-of-features> <image>"
+    print("Usage:", sys.argv[0], "<bag-of-features> <image>")
     sys.exit(1)
 
 query_image = sys.argv[2]
@@ -25,7 +25,7 @@ sift = cv2.xfeatures2d.SIFT_create()
 kp, des = sift.detectAndCompute(qImage, None)
 
 h = np.zeros(vocab_size)
-print "Calculating histogram for queried image."
+print("Calculating histogram for queried image.")
 for i in range(0, len(kp)): # len(kp) == len(des)
     label = bag.predict(des[i].reshape(1, -1))
     h[label[0]] += 1
@@ -34,7 +34,7 @@ for i in range(0, len(kp)): # len(kp) == len(des)
 normalized = np.zeros(vocab_size)
 cv2.normalize(h, normalized, norm_type=cv2.NORM_L2)
 
-print "Queried image hist from visual words:"
+print("Queried image hist from visual words:")
     #print hist
 
 plt.subplot(221)
