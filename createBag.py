@@ -42,7 +42,7 @@ category = [i.split("/")[-1] for i in category] # eliminates absolute path
 
 #image_names = glob.glob(sys.argv[1] + "*.png") + glob.glob(sys.argv[1] + "*.jpg") # this is the list of images that will be used to generate the Bag of Features file
 
-sift = cv2.xfeatures2d.SIFT_create()
+sift = cv2.SIFT_create()
 
 # dictionary that holds each category and another dictionary for its keypoints and descriptors.
 # e.g. "'category': {'kp': kp_list, 'des': des_list}"

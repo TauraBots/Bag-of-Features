@@ -86,7 +86,7 @@ classifier = joblib.load(sys.argv[2])
 original_img = cv2.imread(sys.argv[3])
 
 # creating sift object
-sift = cv2.xfeatures2d.SIFT_create()
+sift = cv2.SIFT_create()
 
 vocab_size = len(set(bag.labels_)) # the total number of visual words in the bag
 

@@ -19,7 +19,7 @@ classifier = joblib.load(sys.argv[1])
 bag = joblib.load(sys.argv[2])
 vocab_size = len(set(bag.labels_)) # how many visual words there are in the bag
 
-sift = cv2.xfeatures2d.SIFT_create()
+sift = cv2.SIFT_create()
 
 cap = cv2.VideoCapture(0)
 

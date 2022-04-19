@@ -21,7 +21,7 @@ vocab_size = len(set(bag.labels_))
 # showing points and labels in the first image
 original = cv2.imread(query_image)
 qImage = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
-sift = cv2.xfeatures2d.SIFT_create()
+sift = cv2.SIFT_create()
 kp, des = sift.detectAndCompute(qImage, None)
 
 h = np.zeros(vocab_size)

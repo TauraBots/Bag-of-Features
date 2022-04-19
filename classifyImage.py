@@ -22,7 +22,7 @@ query_image = cv2.imread(sys.argv[3])
 if query_image.shape[2]: # rgb images should be converted to grayscale for sift
     query_image = cv2.cvtColor(query_image, cv2.COLOR_BGR2GRAY)
 
-sift = cv2.xfeatures2d.SIFT_create()
+sift = cv2.SIFT_create()
 kp, des = sift.detectAndCompute(query_image, None)
 
 vocab_size = len(set(bag.labels_)) # how many visual words there are in the bag

@@ -21,7 +21,7 @@ vocab_size = len(set(bag.labels_)) # how many words there are in the bag
 category = glob(root_path + "*") # retrieves directories inside root path
 category = [i.split("/")[-1] for i in category] # eliminates absolute path
 
-sift = cv2.xfeatures2d.SIFT_create()
+sift = cv2.SIFT_create()
 
 # First we need to mount the histogram vector containing the images from all
 # categories 
