@@ -27,9 +27,13 @@ kp, des = sift.detectAndCompute(query_image, None)
 
 vocab_size = len(set(bag.labels_)) # how many visual words there are in the bag
 hist = np.zeros(vocab_size) # initializes the histogram with zeros
-for i in range(0, len(kp)): # iterates through keypoints counting our visual words
-    word = bag.predict(des[i].reshape(1, -1)) # finds which of our words fit best
-    hist[word[0]] += 1 # increment one occurence of it
+
+word_vector = bag.predict(np.asarray(des, dtype=float))
+
+# for each unique word
+for word in np.unique(word_vector):
+    res = list(word_vector).count(word) # count the number of word in word_vector
+    hist[word] = res # increment the number of occurrences of it
 
 # normalizes histogram
 cv2.normalize(hist, hist, norm_type=cv2.NORM_L2)

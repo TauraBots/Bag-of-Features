@@ -25,10 +25,14 @@ sift = cv2.SIFT_create()
 kp, des = sift.detectAndCompute(qImage, None)
 
 h = np.zeros(vocab_size)
+
 print("Calculating histogram for queried image.")
-for i in range(0, len(kp)): # len(kp) == len(des)
-    label = bag.predict(des[i].reshape(1, -1))
-    h[label[0]] += 1
+word_vector = bag.predict(np.asarray(des, dtype=float))
+
+# for each unique word
+for word in np.unique(word_vector):
+    res = list(word_vector).count(word) # count the number of word in word_vector
+    h[word] = res # increment the number of occurrences of it
 
 # normalizing histogram using OpenCV normalize
 normalized = np.zeros(vocab_size)

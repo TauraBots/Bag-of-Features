@@ -50,9 +50,12 @@ for c in category:
         
         # mounts histogram for current image
         hist_i = np.zeros(vocab_size)
-        for d in des_i: # kp_i and des_i have the same length
-            word = bag.predict(d.reshape(1, -1)) # uses the bag of words to find which cluster this descriptor best fit
-            hist_i[word[0]] += 1 # increments histogram for that word
+        word_vector = bag.predict(np.asarray(des_i, dtype=float)) # uses the bag of words to find which cluster this descriptor best fit
+
+        # for each unique word
+        for word in np.unique(word_vector):
+            res = list(word_vector).count(word) # count the number of word in word_vector
+            hist_i[word] = res # increment the number of occurrences of it
 
         # normalizes histogram
         cv2.normalize(hist_i, hist_i, norm_type=cv2.NORM_L2)

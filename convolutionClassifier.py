@@ -24,9 +24,12 @@ def getFeaturesHist(img):
 
     # mount the features histogram from the descriptors using the bag
     features_hist = np.zeros(vocab_size)
-    for d in des:
-        word = bag.predict(d.reshape(1, -1))
-        features_hist[word[0]] += 1                
+    word_vector = bag.predict(np.asarray(des, dtype=float))
+
+    # for each unique word
+    for word in np.unique(word_vector):
+        res = list(word_vector).count(word) # count the number of word in word_vector
+        features_hist[word] = res # increment the number of occurrences of it              
 
     return features_hist
 
