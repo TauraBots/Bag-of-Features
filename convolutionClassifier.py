@@ -24,9 +24,12 @@ def getFeaturesHist(img):
 
     # mount the features histogram from the descriptors using the bag
     features_hist = np.zeros(vocab_size)
-    for d in des:
-        word = bag.predict(d.reshape(1, -1))
-        features_hist[word[0]] += 1                
+    word_vector = bag.predict(np.asarray(des, dtype=float))
+
+    # for each unique word
+    for word in np.unique(word_vector):
+        res = list(word_vector).count(word) # count the number of word in word_vector
+        features_hist[word] = res # increment the number of occurrences of it              
 
     return features_hist
 
@@ -55,7 +58,7 @@ def convolutionClassifier(img):
                 try:
                     label = classifier.predict([roi_hist])
                     if label[0] == 'bike':
-                        print "I see:", classifier.predict([roi_hist])
+                        print("I see:", classifier.predict([roi_hist]))
                         cv2.imshow("Image", rgb_img)
                         cv2.waitKey(0)
                         cv2.destroyAllWindows()
@@ -77,7 +80,7 @@ def convolutionClassifier(img):
         k_boundaries = (k_boundaries[0] * 2, k_boundaries[1] * 2)
 
 if len(sys.argv) != 4:
-    print "Usage:", sys.argv[0], "<Bag-of-Features> <Classifier> <Image>"
+    print("Usage:", sys.argv[0], "<Bag-of-Features> <Classifier> <Image>")
     sys.exit(1)
 
 # retrieving arguments from command line
@@ -86,7 +89,7 @@ classifier = joblib.load(sys.argv[2])
 original_img = cv2.imread(sys.argv[3])
 
 # creating sift object
-sift = cv2.xfeatures2d.SIFT_create()
+sift = cv2.SIFT_create()
 
 vocab_size = len(set(bag.labels_)) # the total number of visual words in the bag
 

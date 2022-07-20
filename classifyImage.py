@@ -12,7 +12,7 @@ import sys
 from matplotlib import pyplot as plt
 
 if len(sys.argv) != 4:
-    print "Usage", sys.argv[0], "<classifier-file> <bag-of-features-file> <query-image>"
+    print("Usage", sys.argv[0], "<classifier-file> <bag-of-features-file> <query-image>")
     sys.exit(1)
 
 classifier = joblib.load(sys.argv[1])
@@ -22,18 +22,22 @@ query_image = cv2.imread(sys.argv[3])
 if query_image.shape[2]: # rgb images should be converted to grayscale for sift
     query_image = cv2.cvtColor(query_image, cv2.COLOR_BGR2GRAY)
 
-sift = cv2.xfeatures2d.SIFT_create()
+sift = cv2.SIFT_create()
 kp, des = sift.detectAndCompute(query_image, None)
 
 vocab_size = len(set(bag.labels_)) # how many visual words there are in the bag
 hist = np.zeros(vocab_size) # initializes the histogram with zeros
-for i in range(0, len(kp)): # iterates through keypoints counting our visual words
-    word = bag.predict(des[i].reshape(1, -1)) # finds which of our words fit best
-    hist[word[0]] += 1 # increment one occurence of it
+
+word_vector = bag.predict(np.asarray(des, dtype=float))
+
+# for each unique word
+for word in np.unique(word_vector):
+    res = list(word_vector).count(word) # count the number of word in word_vector
+    hist[word] = res # increment the number of occurrences of it
 
 # normalizes histogram
 cv2.normalize(hist, hist, norm_type=cv2.NORM_L2)
 
 category = classifier.predict([hist])
-print "This is:", category
-print "proba:", classifier.decision_function([hist])
+print("This is:", category)
+print("proba:", classifier.decision_function([hist]))

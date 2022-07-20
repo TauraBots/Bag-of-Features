@@ -11,7 +11,7 @@ from sklearn import svm
 import sys
 
 if len(sys.argv) != 3:
-    print "Usage", sys.argv[0], "<classifier-file> <bag-of-features-file>"
+    print("Usage", sys.argv[0], "<classifier-file> <bag-of-features-file>")
     sys.exit(1)
 
 classifier = joblib.load(sys.argv[1])
@@ -19,7 +19,7 @@ classifier = joblib.load(sys.argv[1])
 bag = joblib.load(sys.argv[2])
 vocab_size = len(set(bag.labels_)) # how many visual words there are in the bag
 
-sift = cv2.xfeatures2d.SIFT_create()
+sift = cv2.SIFT_create()
 
 cap = cv2.VideoCapture(0)
 
@@ -31,15 +31,18 @@ while True:
     kp, des = sift.detectAndCompute(frame, None)
 
     hist = np.zeros(vocab_size) # initializes the histogram with zeros
-    for i in range(0, len(kp)): # iterates through keypoints counting our visual words
-        word = bag.predict(des[i].reshape(1, -1)) # finds which of our words fit best
-        hist[word[0]] += 1 # increment one occurence of it
+    word_vector = bag.predict(np.asarray(des, dtype=float))
+
+    # for each unique word
+    for word in np.unique(word_vector):
+        res = list(word_vector).count(word) # count the number of word in word_vector
+        hist[word] = res # increment the number of occurrences of it
 
     # normalizes histogram
     cv2.normalize(hist, hist, norm_type=cv2.NORM_L2)
 
-    print hist
-    print "I see:", classifier.predict([hist])
+    print(hist)
+    print("I see:", classifier.predict([hist]))
     #print "Distance:", classifier.decision_function([hist])
 
     cv2.imshow("Frame", frame)
